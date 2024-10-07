@@ -22,7 +22,7 @@ const Navbar = () => {
       <header className="w-full z-50 flex justify-between items-center h-20 py-4 px-5 md:px-10 bg-primary text-primary-foreground">
         <Link href="/" title="Voltar para pagina inicial">
           <div className="flex z-50 gap-1 items-center">
-            <div className="w-8 h-8 flex items-center border-2 rounded-full border-teal-400 p-1.5">
+            <div className="w-10 h-10 flex items-center border-2 rounded-full border-teal-400 p-1.5">
               <Wrench className="text-teal-400" size={26} />
             </div>
             <h1 className="text-2xl">WorkEasy</h1>
@@ -54,7 +54,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href="/dashboard/metricas">
                 <div
                   title="Ir para o dashboard administrativo."
                   className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
@@ -87,7 +87,7 @@ const Navbar = () => {
       </header>
       <nav
         className={`absolute z-20 w-full h-full duration-300 bg-primary ${
-          isOpen ? "top-0" : "-top-full"
+          isOpen ? "top-0 opacity-100" : "-top-full opacity-0"
         }`}
       >
         <ul className="flex gap-6 pt-32 flex-col items-center text-primary-foreground">
@@ -114,7 +114,10 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link onClick={() => setIsOpen((prev) => !prev)} href="/">
+            <Link
+              onClick={() => setIsOpen((prev) => !prev)}
+              href="/dashboard/metricas"
+            >
               <div
                 title="Ir para o dashboard administrativo."
                 className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
