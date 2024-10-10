@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import NewTaskModal from "../modals/newTaskModal";
+import NewTaskModal from "../modals/tasks/newTaskModal";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,10 +33,7 @@ const Navbar = () => {
         <nav className="hidden md:flex">
           <ul className="flex gap-6 items-center">
             <li>
-              <NewTaskModal />
-            </li>
-            <li>
-              <Link href="/">
+              <Link href="/agenda">
                 <div
                   title="Ir para pagina de calendario de tarefas."
                   className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
@@ -96,7 +93,7 @@ const Navbar = () => {
       >
         <ul className="flex gap-6 pt-32 flex-col items-center text-primary-foreground">
           <li>
-            <Link onClick={() => setIsOpen((prev) => !prev)} href="/">
+            <Link onClick={() => setIsOpen((prev) => !prev)} href="/agenda">
               <div
                 title="Ir para pagina de calendario de tarefas."
                 className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
@@ -131,9 +128,7 @@ const Navbar = () => {
               </div>
             </Link>
           </li>
-          <li>
-            <NewTaskModal closeNavMobile={() => setIsOpen((prev) => !prev)} />
-          </li>
+
           <li>
             <Link onClick={() => setIsOpen((prev) => !prev)} href="/auth">
               <div

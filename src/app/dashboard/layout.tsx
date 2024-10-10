@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { Nunito } from "next/font/google";
 import DashboardSidebar from "@/components/dashboardSidebar";
 
 export const metadata: Metadata = {
