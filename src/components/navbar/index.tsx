@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { Button } from "../ui/button";
 import NewTaskModal from "../modals/tasks/newTaskModal";
+import ProfileDropdown from "../dropdowns/profileDropdown";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href="/solicitacoes">
                 <div
                   title="Ir para pagina de solitações de tarefas em aberto."
                   className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
@@ -76,6 +77,9 @@ const Navbar = () => {
                 </div>
               </Link>
             </li>
+            <li>
+              <ProfileDropdown name="Josué" id={2} />
+            </li>
           </ul>
         </nav>
 
@@ -104,7 +108,10 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link onClick={() => setIsOpen((prev) => !prev)} href="/">
+            <Link
+              onClick={() => setIsOpen((prev) => !prev)}
+              href="/solicitacoes"
+            >
               <div
                 title="Ir para pagina de solitações de tarefas em aberto."
                 className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
@@ -127,6 +134,10 @@ const Navbar = () => {
                 <p>Dashboard</p>
               </div>
             </Link>
+          </li>
+
+          <li>
+            <ProfileDropdown name="Josué" id={2} />
           </li>
 
           <li>

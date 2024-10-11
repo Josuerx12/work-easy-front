@@ -12,6 +12,7 @@ import {
   SquareChartGantt,
 } from "lucide-react";
 import { months } from "@/lib/utils";
+import NewTaskModal from "../modals/tasks/newTaskModal";
 
 type Props = {
   month: number;
@@ -29,7 +30,7 @@ const TopScheduleMenu = ({
   return (
     <div className="hidden lg:block w-fit drop-shadow-xl mt-4 bg-secondary ml-auto px-4 py-2 rounded-md">
       <div className="flex gap-6 justify-end items-center">
-        <div className="flex items-center gap-2">
+        <div className="flex justify-between w-40 items-center gap-2">
           <Button onClick={handlePrevMonth} title="Mes anterior" size={"icon"}>
             <ChevronLeft size={18} />
           </Button>
@@ -46,17 +47,21 @@ const TopScheduleMenu = ({
           className="bg-green-500 hover:bg-green-600 duration-200 text-primary-foreground"
         >
           <div className="flex gap-2 items-center capitalize">
-            <p>Baixar relatorio mensal</p> <SquareChartGantt />
+            <p>relatorio mensal</p> <SquareChartGantt />
           </div>
         </Button>
-        <Button
-          title="Adicionar nova tarefa."
-          className="bg-primary hover:bg-black duration-200"
-        >
-          <div className="flex gap-2 items-center capitalize">
-            <p>Nova tarefa</p> <BookmarkPlus />
-          </div>
-        </Button>
+        <NewTaskModal
+          ButtonNewTask={
+            <Button
+              title="Adicionar nova tarefa."
+              className="bg-primary hover:bg-black duration-200"
+            >
+              <div className="flex gap-2 items-center capitalize">
+                <p>Nova tarefa</p> <BookmarkPlus />
+              </div>
+            </Button>
+          }
+        />
       </div>
     </div>
   );

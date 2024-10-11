@@ -21,18 +21,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Ban, BlocksIcon, Plus } from "lucide-react";
+import React, { ReactNode } from "react";
 
-const NewTaskModal = ({ closeNavMobile }: { closeNavMobile?: () => void }) => {
+const NewTaskModal = ({
+  closeNavMobile,
+  ButtonNewTask,
+}: {
+  closeNavMobile?: () => void;
+  ButtonNewTask: ReactNode;
+}) => {
   return (
     <Dialog modal={true}>
-      <DialogTrigger asChild>
-        <Button
-          onClick={closeNavMobile}
-          className="bg-secondary text-secondary-foreground flex items-center gap-2 duration-200 font-bold hover:bg-teal-400 hover:text-primary"
-        >
-          <Plus size={18} /> Nova tarefa
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{ButtonNewTask}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Nova Tarefa</DialogTitle>

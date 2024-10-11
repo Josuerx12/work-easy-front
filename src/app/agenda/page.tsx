@@ -1,7 +1,7 @@
 "use client";
 import TaskDetailModal from "@/components/modals/tasks/taskDetailModal";
 import TopScheduleMenu from "@/components/topScheduleMenu";
-import { Calendar, Pickaxe } from "lucide-react";
+import { Calendar, CalendarDays, Pickaxe } from "lucide-react";
 import React, { useState } from "react";
 
 const AgendaPage = () => {
@@ -75,10 +75,10 @@ const AgendaPage = () => {
 
   return (
     <div className="flex flex-col w-[97%] mx-auto">
-      <div className="flex items-center justify-center gap-2 mt-4">
-        <h2 className="text-2xl font-bold">Agenda</h2>
-        <Calendar />
-      </div>
+      <h2 className="text-2xl uppercase font-bold mx-auto mt-4 text-center">
+        Agenda
+      </h2>
+
       <TopScheduleMenu
         year={year}
         month={month}
@@ -95,7 +95,7 @@ const AgendaPage = () => {
         {days.map((day, index) => (
           <div
             key={index}
-            className="border p-2 text-center rounded shadow-lg flex flex-col relative h-48 "
+            className="border p-2 text-center rounded shadow-lg flex flex-col relative h-56 "
           >
             <p className="bg-primary w-8 h-8 font-semibold text-sm text-primary-foreground flex items-center justify-center rounded-full absolute inset-0 -top-2 -left-2 mb-1">
               {day.getDate()}

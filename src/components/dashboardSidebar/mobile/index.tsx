@@ -44,24 +44,36 @@ const MobileDashboardSidebar = () => {
         <nav>
           <ul className="flex flex-col gap-5 mt-6">
             <li>
-              <Link href="/dashboard/empresas">
+              <Link href="/dashboard/metricas">
                 <div
                   title="Ir para pagina de administração de empresas."
                   className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
                 >
-                  <Building2 size={16} />
-                  <p>Empresas</p>
+                  <CircleGauge size={16} />
+                  <p>Metricas</p>
                 </div>
               </Link>
             </li>
+
             <li>
-              <Link href="/dashboard/usuarios-empresas">
+              <Link href="/dashboard/usuarios-empresa">
                 <div
                   title="Ir para pagina de administração de empresas."
                   className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
                 >
                   <Users size={16} />
-                  <p>Usuários de Empresas</p>
+                  <p>Usuários da Empresa</p>
+                </div>
+              </Link>
+            </li>
+            <li>
+              <Link href="/dashboard/clientes-empresa">
+                <div
+                  title="Ir para pagina de administração de empresas."
+                  className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
+                >
+                  <Users size={16} />
+                  <p>Clientes da Empresa</p>
                 </div>
               </Link>
             </li>
@@ -73,6 +85,17 @@ const MobileDashboardSidebar = () => {
                 >
                   <SmilePlus size={16} />
                   <p>Usuários Solicitantes</p>
+                </div>
+              </Link>
+            </li>
+            <li>
+              <Link href="/dashboard/empresas">
+                <div
+                  title="Ir para pagina de administração de empresas."
+                  className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
+                >
+                  <Building2 size={16} />
+                  <p>Empresas</p>
                 </div>
               </Link>
             </li>
@@ -106,17 +129,6 @@ const MobileDashboardSidebar = () => {
                 >
                   <HandCoins size={16} />
                   <p>Planos</p>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link href="/dashboard/metricas">
-                <div
-                  title="Ir para pagina de administração de empresas."
-                  className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
-                >
-                  <CircleGauge size={16} />
-                  <p>Metricas</p>
                 </div>
               </Link>
             </li>
