@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Ban, BlocksIcon, Plus } from "lucide-react";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 
 const NewTaskModal = ({
   closeNavMobile,
@@ -30,10 +32,16 @@ const NewTaskModal = ({
   closeNavMobile?: () => void;
   ButtonNewTask: ReactNode;
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Dialog modal={true}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => setIsOpen((prev) => !prev)}
+      modal={true}
+    >
       <DialogTrigger asChild>{ButtonNewTask}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-11/12 md:max-w-xl lg:max-w-4xl md:w-full">
         <DialogHeader>
           <DialogTitle>Nova Tarefa</DialogTitle>
           <DialogDescription>
@@ -79,11 +87,19 @@ const NewTaskModal = ({
             />
           </div>
         </div>
+
         <DialogFooter className="flex gap-2">
-          <Button className="flex gap-2 items-center" variant={"destructive"}>
+          <Button
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="flex gap-2 items-center"
+            variant={"destructive"}
+          >
             <Ban size={20} /> Cancelar
           </Button>
-          <Button className="flex gap-2 items-center">
+          <Button
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="flex gap-2 items-center"
+          >
             <Plus size={20} /> Criar
           </Button>
         </DialogFooter>

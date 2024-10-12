@@ -1,6 +1,6 @@
 "use client";
 import TaskDetailModal from "@/components/modals/tasks/taskDetailModal";
-import TopScheduleMenu from "@/components/topScheduleMenu";
+import TopScheduleMenu from "@/components/topBars/topScheduleMenu";
 import { Calendar, CalendarDays, Pickaxe } from "lucide-react";
 import React, { useState } from "react";
 

@@ -1,4 +1,14 @@
 import RequestsTable from "@/components/tables/requestsTable";
+import TopBarRequestMenu from "@/components/topBars/topBarRequestMenu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import React from "react";
 
 const RequestsPage = () => {
@@ -41,13 +51,33 @@ const RequestsPage = () => {
     },
   ];
   return (
-    <div>
+    <div className="w-11/12 mx-auto mt-4">
       <h2 className="text-2xl uppercase font-bold mx-auto mt-4 text-center">
         Solicitações
       </h2>
 
-      <div className="w-11/12 mx-auto mt-4">
+      <TopBarRequestMenu />
+
+      <div className=" mx-auto mt-6 border rounded">
         <RequestsTable tasks={taskArr} />
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="#" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">1</PaginationLink>
+              <PaginationLink href="#">2</PaginationLink>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href="#" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
