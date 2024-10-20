@@ -7,12 +7,8 @@ const AuthPage = () => {
   return (
     <div className="w-full pt-20 flex justify-center">
       <Tabs defaultValue="login" className="max-w-[900px] w-full p-2">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="login">Login</TabsTrigger>
-          <TabsTrigger value="register">Cadastre-se</TabsTrigger>
-        </TabsList>
+        <TabsList className="grid w-full"></TabsList>
         <LoginCard />
-        <RegisterCard />
       </Tabs>
     </div>
   );

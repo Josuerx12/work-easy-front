@@ -15,9 +15,12 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import NewTaskModal from "../modals/tasks/newTaskModal";
 import ProfileDropdown from "../dropdowns/profileDropdown";
+import { useAuth } from "@/context/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { user } = useAuth();
 
   return (
     <>
@@ -33,53 +36,58 @@ const Navbar = () => {
 
         <nav className="hidden md:flex">
           <ul className="flex gap-6 items-center">
-            <li>
-              <Link href="/agenda">
-                <div
-                  title="Ir para pagina de calendario de tarefas."
-                  className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
-                >
-                  <CalendarCheck size={16} />
-                  <p>Agenda</p>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link href="/solicitacoes">
-                <div
-                  title="Ir para pagina de solitações de tarefas em aberto."
-                  className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
-                >
-                  <Kanban size={16} />
-                  <p>Solicitações</p>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link href="/dashboard/metricas">
-                <div
-                  title="Ir para o dashboard administrativo."
-                  className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
-                >
-                  <LayoutDashboard size={16} />
-                  <p>Dashboard</p>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link href="/auth">
-                <div
-                  title="Identifique-se para utilizar o app."
-                  className="flex items-center bg-teal-400 text-primary font-bold p-2 rounded-md  gap-2 text-sm hover:bg-teal-300 duration-200 cursor-pointer"
-                >
-                  <Lock size={16} />
-                  <p>Autentique-se</p>
-                </div>
-              </Link>
-            </li>
-            <li>
-              <ProfileDropdown name="Josué" id={2} />
-            </li>
+            {!user ? (
+              <li>
+                <Link href="/auth">
+                  <div
+                    title="Identifique-se para utilizar o app."
+                    className="flex items-center bg-teal-400 text-primary font-bold p-2 rounded-md  gap-2 text-sm hover:bg-teal-300 duration-200 cursor-pointer"
+                  >
+                    <Lock size={16} />
+                    <p>Autentique-se</p>
+                  </div>
+                </Link>
+              </li>
+            ) : (
+              <>
+                <li>
+                  <Link href="/agenda">
+                    <div
+                      title="Ir para pagina de calendario de tarefas."
+                      className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
+                    >
+                      <CalendarCheck size={16} />
+                      <p>Agenda</p>
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/solicitacoes">
+                    <div
+                      title="Ir para pagina de solitações de tarefas em aberto."
+                      className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
+                    >
+                      <Kanban size={16} />
+                      <p>Solicitações</p>
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/dashboard/metricas">
+                    <div
+                      title="Ir para o dashboard administrativo."
+                      className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
+                    >
+                      <LayoutDashboard size={16} />
+                      <p>Dashboard</p>
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <ProfileDropdown name="Josué" id={2} />
+                </li>
+              </>
+            )}
           </ul>
         </nav>
 
@@ -96,61 +104,65 @@ const Navbar = () => {
         }`}
       >
         <ul className="flex gap-6 pt-32 flex-col items-center text-primary-foreground">
-          <li>
-            <Link onClick={() => setIsOpen((prev) => !prev)} href="/agenda">
-              <div
-                title="Ir para pagina de calendario de tarefas."
-                className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
-              >
-                <CalendarCheck size={16} />
-                <p>Agenda</p>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              onClick={() => setIsOpen((prev) => !prev)}
-              href="/solicitacoes"
-            >
-              <div
-                title="Ir para pagina de solitações de tarefas em aberto."
-                className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
-              >
-                <Kanban size={16} />
-                <p>Solicitações</p>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              onClick={() => setIsOpen((prev) => !prev)}
-              href="/dashboard/metricas"
-            >
-              <div
-                title="Ir para o dashboard administrativo."
-                className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
-              >
-                <LayoutDashboard size={16} />
-                <p>Dashboard</p>
-              </div>
-            </Link>
-          </li>
-
-          <li>
-            <ProfileDropdown name="Josué" id={2} />
-          </li>
-
-          <li>
-            <Link onClick={() => setIsOpen((prev) => !prev)} href="/auth">
-              <div
-                title="Identifique-se para utilizar o app."
-                className="flex items-center bg-teal-400 text-primary font-bold p-2 rounded-md  gap-2 text-sm hover:bg-teal-300 duration-200 cursor-pointer"
-              >
-                <Lock size={16} />
-                <p>Autentique-se</p>
-              </div>
-            </Link>
-          </li>
+          {!user ? (
+            <li>
+              <Link onClick={() => setIsOpen((prev) => !prev)} href="/auth">
+                <div
+                  title="Identifique-se para utilizar o app."
+                  className="flex items-center bg-teal-400 text-primary font-bold p-2 rounded-md  gap-2 text-sm hover:bg-teal-300 duration-200 cursor-pointer"
+                >
+                  <Lock size={16} />
+                  <p>Autentique-se</p>
+                </div>
+              </Link>
+            </li>
+          ) : (
+            <>
+              {" "}
+              <li>
+                <Link onClick={() => setIsOpen((prev) => !prev)} href="/agenda">
+                  <div
+                    title="Ir para pagina de calendario de tarefas."
+                    className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
+                  >
+                    <CalendarCheck size={16} />
+                    <p>Agenda</p>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  href="/solicitacoes"
+                >
+                  <div
+                    title="Ir para pagina de solitações de tarefas em aberto."
+                    className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
+                  >
+                    <Kanban size={16} />
+                    <p>Solicitações</p>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  href="/dashboard/metricas"
+                >
+                  <div
+                    title="Ir para o dashboard administrativo."
+                    className="flex items-center gap-1 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
+                  >
+                    <LayoutDashboard size={16} />
+                    <p>Dashboard</p>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <ProfileDropdown name="Josué" id={2} />
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </>

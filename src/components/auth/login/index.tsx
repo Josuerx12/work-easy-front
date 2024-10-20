@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,10 +10,33 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { LoginCredentials } from "@/interfaces/user.interface";
 import { TabsContent } from "@radix-ui/react-tabs";
-import React from "react";
+import React, { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 
 const LoginCard = () => {
+  const { handleSubmit, register } = useForm<LoginCredentials>();
+  const { toast } = useToast();
+  const { login } = useAuth();
+  const { mutateAsync } = useMutation(["handleLogin"], login, {
+    onSuccess: () => {
+      toast({
+        title: "Autenticação",
+        description: "Login efetuado com sucesso!",
+      });
+    },
+  });
+
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  const onSubmit = async (data: LoginCredentials) => {
+    await mutateAsync(data);
+  };
+
   return (
     <TabsContent value="login">
       <Card>
@@ -23,22 +47,35 @@ const LoginCard = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
-          <div className="space-y-1">
-            <Label htmlFor="email">email</Label>
-            <Input
-              id="email"
-              type="email"
-              required
-              placeholder="johndoe@email.com"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="password">Senha</Label>
-            <Input id="password" type="password" placeholder="**********" />
-          </div>
+          <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-1">
+              <Label htmlFor="email">email</Label>
+              <Input
+                {...register("email")}
+                id="email"
+                type="email"
+                required
+                placeholder="johndoe@email.com"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="password">Senha</Label>
+              <Input
+                {...register("password")}
+                id="password"
+                type="password"
+                placeholder="**********"
+              />
+            </div>
+          </form>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Button title="Clique aqui para fazer login.">Fazer Login</Button>
+          <Button
+            onClick={() => formRef.current?.requestSubmit()}
+            title="Clique aqui para fazer login."
+          >
+            Fazer Login
+          </Button>
         </CardFooter>
       </Card>
     </TabsContent>

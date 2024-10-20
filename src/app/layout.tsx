@@ -3,6 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { Nunito } from "next/font/google";
+import { AuthContextProvider } from "@/context/AuthContext";
+import ReactQueryProvider from "@/providers/reactQueryProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -19,8 +22,13 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <body className={`${nunito.className} antialiased`}>
-        <Navbar />
-        {children}
+        <AuthContextProvider>
+          <ReactQueryProvider>
+            <Navbar />
+            {children}
+            <Toaster />
+          </ReactQueryProvider>
+        </AuthContextProvider>
       </body>
     </html>
   );
