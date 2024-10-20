@@ -36,20 +36,22 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const getUser = async () => {
     try {
-      const res = await setupHttp.get("/auth/user");
-      const user = res.data.payload.user;
+      const res = await setupHttp.get("/users/" + user?.id);
+      const userResponse = res.data;
 
-      setUser(user);
+      setUser(userResponse);
     } catch (error: any) {
       setupHttp.defaults.headers.common.Authorization = ``;
-      throw error.response.data.payload.errors;
+      throw error.response.data.errors;
     }
   };
 
   const login = async (credentials: LoginCredentials) => {
     try {
       const res = await setupHttp.post("/auth/login", credentials);
-      const token = res.data.payload.token;
+      const token = res.data.token;
+
+      setUser(res.data.user);
 
       setCookie("refreshToken", token);
       setupHttp.defaults.headers.common.Authorization = `Bearer ${token}`;
@@ -58,7 +60,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: any) {
       setupHttp.defaults.headers.common.Authorization = ``;
       console.log(error);
-      throw error.response.data.payload.errors;
+      throw error.response.data.errors;
     }
   };
 

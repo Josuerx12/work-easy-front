@@ -1,5 +1,6 @@
 import axios from "axios";
 
 export const setupHttp = axios.create({
-  baseURL: "https://6yv67bkzl8.execute-api.us-east-1.amazonaws.com/dev/",
+  baseURL:
+    "https://6ms5ufdunlo7f52v6fjdfpaoa40lydxa.lambda-url.us-east-1.on.aws",
 });
