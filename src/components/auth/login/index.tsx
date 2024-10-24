@@ -14,6 +14,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { LoginCredentials } from "@/interfaces/user.interface";
 import { TabsContent } from "@radix-ui/react-tabs";
+import { redirect } from "next/navigation";
 import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
@@ -21,7 +22,7 @@ import { useMutation } from "react-query";
 const LoginCard = () => {
   const { handleSubmit, register } = useForm<LoginCredentials>();
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const { mutateAsync } = useMutation(["handleLogin"], login, {
     onSuccess: () => {
       toast({
@@ -30,6 +31,10 @@ const LoginCard = () => {
       });
     },
   });
+
+  if (user) {
+    redirect("/agenda");
+  }
 
   const formRef = useRef<HTMLFormElement | null>(null);
 

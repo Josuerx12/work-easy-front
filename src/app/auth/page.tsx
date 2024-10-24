@@ -1,5 +1,4 @@
 import LoginCard from "@/components/auth/login";
-import RegisterCard from "@/components/auth/register";
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import React from "react";
 

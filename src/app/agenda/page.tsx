@@ -1,10 +1,18 @@
 "use client";
 import TaskDetailModal from "@/components/modals/tasks/taskDetailModal";
 import TopScheduleMenu from "@/components/topBars/topScheduleMenu";
-import { Calendar, CalendarDays, Pickaxe } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { Pickaxe } from "lucide-react";
+import { redirect } from "next/navigation";
 import React, { useState } from "react";
 
 const AgendaPage = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    redirect("/auth");
+  }
+
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
 

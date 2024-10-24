@@ -11,10 +11,16 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const DashboardSidebar = () => {
   const path = usePathname();
+  const { user } = useAuth();
+
+  if (!user) {
+    redirect("/auth");
+  }
 
   return (
     <div className="flex ">

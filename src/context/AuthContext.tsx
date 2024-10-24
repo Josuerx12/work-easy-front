@@ -9,7 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { getCookie, setCookie } from "cookies-next";
+import { getCookie, setCookie, deleteCookie } from "cookies-next";
 
 export type ContextType = {
   login: (props: { email: string; password: string }) => Promise<unknown>;
@@ -20,9 +20,9 @@ export type ContextType = {
 export const AuthContext = createContext<ContextType>({} as ContextType);
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<IUser | undefined>();
+  const [user, setUser] = useState<IUser | null | undefined>();
 
-  const token = getCookie("refreshToken");
+  const token = getCookie("refreshToken_workeasy");
 
   useEffect(() => {
     const loadUser = async () => {
@@ -36,12 +36,15 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const getUser = async () => {
     try {
-      const res = await setupHttp.get("/users/" + user?.id);
+      const res = await setupHttp.get("/users/userAuthenticated");
       const userResponse = res.data;
 
       setUser(userResponse);
     } catch (error: any) {
+      deleteCookie("refreshToken_workeasy");
+      setUser(null);
       setupHttp.defaults.headers.common.Authorization = ``;
+
       throw error.response.data.errors;
     }
   };
@@ -53,7 +56,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
       setUser(res.data.user);
 
-      setCookie("refreshToken", token);
+      setCookie("refreshToken_workeasy", token);
       setupHttp.defaults.headers.common.Authorization = `Bearer ${token}`;
 
       await getUser();
