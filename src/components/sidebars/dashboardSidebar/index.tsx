@@ -53,11 +53,11 @@ const DashboardSidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard/metricas">
+                <Link href="/dashboard/maps">
                   <div
                     title="Ir para pagina de administração de empresas."
                     className={`flex items-center gap-1 text-sm p-2 rounded-md ${
-                      path === "/dashboard/metricas"
+                      path === "/dashboard/maps"
                         ? "text-primary-foreground bg-primary"
                         : "hover:text-primary-foreground hover:bg-primary"
                     }  duration-200 cursor-pointer`}

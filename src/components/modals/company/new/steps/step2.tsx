@@ -9,13 +9,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  UseFormRegister,
+  UseFormReset,
+  UseFormSetValue,
+} from "react-hook-form";
+import { newCompanyCredentials } from "..";
 
-const Step2NewCompany = () => {
+type Props = {
+  register: UseFormRegister<newCompanyCredentials>;
+  reset: UseFormReset<newCompanyCredentials>;
+  setValue: UseFormSetValue<newCompanyCredentials>;
+};
+
+const Step2NewCompany = ({ register, reset, setValue }: Props) => {
   return (
     <div className="w-full flex gap-4 flex-wrap">
       <div className="flex flex-col grow gap-2 basis-30">
         <Label className="text-left">Categoria da tarefa</Label>
-        <Select defaultValue="cpf">
+        <Select
+          onValueChange={(e) => setValue("documentType", e)}
+          defaultValue="cpf"
+        >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Selecione o tipo de documento" />
           </SelectTrigger>
@@ -33,6 +48,7 @@ const Step2NewCompany = () => {
           Nº Documento
         </Label>
         <Input
+          {...register("document")}
           id="document"
           placeholder="000.000.000-00 ou 00.000.000/0000-00"
           type="text"
@@ -40,11 +56,12 @@ const Step2NewCompany = () => {
         />
       </div>
       <div className="flex flex-col grow gap-2 basis-40">
-        <Label htmlFor="document" className="text-left">
+        <Label htmlFor="phone" className="text-left">
           Telefone para contato
         </Label>
         <Input
-          id="document"
+          {...register("phone")}
+          id="phone"
           placeholder="(22) 99797-9633"
           type="tel"
           className="col-span-3"

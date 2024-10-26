@@ -30,10 +30,27 @@ import {
   ChevronRight,
   Plus,
 } from "lucide-react";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useRef, useState } from "react";
 import Step1NewCompany from "./steps/step1";
 import Step2NewCompany from "./steps/step2";
 import Step3NewCompany from "./steps/step3";
+import { useForm } from "react-hook-form";
+
+export type newCompanyCredentials = {
+  email: string;
+  name: string;
+  password: string;
+  confirmPassword: string;
+  documentType: string;
+  document: string;
+  phone: string;
+  street: string;
+  neighborhood: string;
+  number: string;
+  city: string;
+  state: string;
+  cep: string;
+};
 
 const NewCompanyModal = ({
   closeNavMobile,
@@ -45,29 +62,23 @@ const NewCompanyModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [steps, setSteps] = useState(1);
 
-  console.log(steps);
+  const { register, reset, setValue, handleSubmit } =
+    useForm<newCompanyCredentials>();
 
-  const newCompanySteps = [
-    {
-      email: true,
-      name: true,
-      password: true,
-      confirmPassword: true,
-    },
-    {
-      documentType: true,
-      document: true,
-      phone: true,
-    },
-    {
-      street: true,
-      neighborhood: true,
-      number: true,
-      city: true,
-      state: true,
-      cep: true,
-    },
-  ];
+  function onSubmit(data: newCompanyCredentials) {
+    console.log(data);
+    setSteps(1);
+    setIsOpen((prev) => !prev);
+    reset();
+  }
+
+  function handleCancel() {
+    setSteps(1);
+    setIsOpen((prev) => !prev);
+    reset();
+  }
+
+  const formRef = useRef<null | HTMLFormElement>(null);
 
   return (
     <Dialog
@@ -84,13 +95,37 @@ const NewCompanyModal = ({
           </DialogDescription>
         </DialogHeader>
 
-        {steps === 1 && <Step1NewCompany />}
-        {steps === 2 && <Step2NewCompany />}
-        {steps === 3 && <Step3NewCompany />}
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit(onSubmit)}
+          className="min-h-52"
+        >
+          {steps === 1 && (
+            <Step1NewCompany
+              register={register}
+              reset={reset}
+              setValue={setValue}
+            />
+          )}
+          {steps === 2 && (
+            <Step2NewCompany
+              register={register}
+              reset={reset}
+              setValue={setValue}
+            />
+          )}
+          {steps === 3 && (
+            <Step3NewCompany
+              register={register}
+              reset={reset}
+              setValue={setValue}
+            />
+          )}
+        </form>
 
         <DialogFooter className="flex gap-1">
           <Button
-            onClick={() => setIsOpen((prev) => !prev)}
+            onClick={handleCancel}
             className="flex gap-2 items-center"
             variant={"ghost"}
           >
@@ -115,7 +150,7 @@ const NewCompanyModal = ({
           {steps === 3 && (
             <Button
               variant={"outline"}
-              onClick={() => setIsOpen((prev) => !prev)}
+              onClick={() => formRef.current?.requestSubmit()}
               className="flex gap-1 items-center"
             >
               Confirmar <Check />

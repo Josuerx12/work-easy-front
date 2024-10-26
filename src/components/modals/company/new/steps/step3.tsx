@@ -1,8 +1,20 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Search } from "lucide-react";
+import {
+  UseFormRegister,
+  UseFormReset,
+  UseFormSetValue,
+} from "react-hook-form";
+import { newCompanyCredentials } from "..";
 
-const Step3NewCompany = () => {
+type Props = {
+  register: UseFormRegister<newCompanyCredentials>;
+  reset: UseFormReset<newCompanyCredentials>;
+  setValue: UseFormSetValue<newCompanyCredentials>;
+};
+
+const Step3NewCompany = ({ register, reset, setValue }: Props) => {
   return (
     <div className="w-full flex gap-4 flex-wrap">
       <div className="flex flex-col grow gap-2 basis-32">
@@ -11,6 +23,7 @@ const Step3NewCompany = () => {
         </Label>
         <div className="flex gap-1 items-center">
           <Input
+            {...register("cep")}
             id="cep"
             placeholder="00000-000"
             type="text"
@@ -29,6 +42,7 @@ const Step3NewCompany = () => {
           Nome da rua
         </Label>
         <Input
+          {...register("street")}
           id="street"
           placeholder="Rua projetada x"
           type="tel"
@@ -40,6 +54,7 @@ const Step3NewCompany = () => {
           Bairro
         </Label>
         <Input
+          {...register("neighborhood")}
           id="neighborhood"
           placeholder="João 23"
           type="tel"
@@ -50,13 +65,20 @@ const Step3NewCompany = () => {
         <Label htmlFor="number" className="text-left">
           Numero
         </Label>
-        <Input id="number" placeholder="12" type="tel" className="col-span-3" />
+        <Input
+          {...register("number")}
+          id="number"
+          placeholder="12"
+          type="tel"
+          className="col-span-3"
+        />
       </div>
       <div className="flex flex-col grow gap-2">
         <Label htmlFor="state" className="text-left">
           Estado
         </Label>
         <Input
+          {...register("state")}
           id="state"
           placeholder="Rua projetada x"
           type="tel"
@@ -68,6 +90,7 @@ const Step3NewCompany = () => {
           Cidade
         </Label>
         <Input
+          {...register("city")}
           id="city"
           placeholder="Rua projetada x"
           type="tel"
