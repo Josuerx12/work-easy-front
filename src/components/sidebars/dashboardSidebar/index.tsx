@@ -7,6 +7,7 @@ import {
   ClipboardCheck,
   HandCoins,
   Handshake,
+  Map,
   SmilePlus,
   Users,
 } from "lucide-react";
@@ -51,7 +52,36 @@ const DashboardSidebar = () => {
                   </div>
                 </Link>
               </li>
-
+              <li>
+                <Link href="/dashboard/metricas">
+                  <div
+                    title="Ir para pagina de administração de empresas."
+                    className={`flex items-center gap-1 text-sm p-2 rounded-md ${
+                      path === "/dashboard/metricas"
+                        ? "text-primary-foreground bg-primary"
+                        : "hover:text-primary-foreground hover:bg-primary"
+                    }  duration-200 cursor-pointer`}
+                  >
+                    <Map size={16} />
+                    <p>Mapa</p>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard/empresas">
+                  <div
+                    title="Ir para pagina de administração de empresas."
+                    className={`flex items-center gap-1 text-sm p-2 rounded-md ${
+                      path === "/dashboard/empresas"
+                        ? "text-primary-foreground bg-primary"
+                        : "hover:text-primary-foreground hover:bg-primary"
+                    }  duration-200 cursor-pointer`}
+                  >
+                    <Building2 size={16} />
+                    <p>Empresas</p>
+                  </div>
+                </Link>
+              </li>
               <li>
                 <Link href="/dashboard/usuarios-empresa">
                   <div
@@ -97,21 +127,7 @@ const DashboardSidebar = () => {
                   </div>
                 </Link>
               </li>
-              <li>
-                <Link href="/dashboard/empresas">
-                  <div
-                    title="Ir para pagina de administração de empresas."
-                    className={`flex items-center gap-1 text-sm p-2 rounded-md ${
-                      path === "/dashboard/empresas"
-                        ? "text-primary-foreground bg-primary"
-                        : "hover:text-primary-foreground hover:bg-primary"
-                    }  duration-200 cursor-pointer`}
-                  >
-                    <Building2 size={16} />
-                    <p>Empresas</p>
-                  </div>
-                </Link>
-              </li>
+
               <li>
                 <Link href="/dashboard/usuarios">
                   <div

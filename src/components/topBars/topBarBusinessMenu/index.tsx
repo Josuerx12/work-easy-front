@@ -6,6 +6,7 @@ import NewTaskModal from "@/components/modals/tasks/newTaskModal";
 import FilterRequestsSidebar from "@/components/sidebars/filterRequestsSidebar";
 import { useAuth } from "@/context/AuthContext";
 import { redirect } from "next/navigation";
+import NewCompanyModal from "@/components/modals/company/new";
 
 const TopBarBusinessMenu = () => {
   const { user } = useAuth();
@@ -18,7 +19,7 @@ const TopBarBusinessMenu = () => {
     <div className="hidden lg:block w-fit drop-shadow-xl my-4 bg-secondary ml-auto px-4 py-2 rounded-md">
       <div className="flex gap-4 justify-end items-center">
         <FilterRequestsSidebar />
-        <NewTaskModal
+        <NewCompanyModal
           ButtonNewTask={
             <Button
               title="Adicionar nova Empresa."
