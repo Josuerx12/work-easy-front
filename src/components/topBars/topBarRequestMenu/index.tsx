@@ -3,7 +3,6 @@ import React from "react";
 import { BookmarkPlus, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NewTaskModal from "@/components/modals/tasks/newTaskModal";
-import FilterRequestsSidebar from "@/components/sidebars/filterRequestsSidebar";
 import { useAuth } from "@/context/AuthContext";
 import { redirect } from "next/navigation";
 
@@ -17,7 +16,6 @@ const TopBarRequestMenu = () => {
   return (
     <div className="hidden lg:block w-fit drop-shadow-xl mt-4 bg-secondary ml-auto px-4 py-2 rounded-md">
       <div className="flex gap-4 justify-end items-center">
-        <FilterRequestsSidebar />
         <NewTaskModal
           ButtonNewTask={
             <Button

@@ -24,12 +24,11 @@ const DashboardSidebar = () => {
   }
 
   return (
-    <div className="flex ">
-      <div className="lg:hidden m-2">
+    <>
+      <div className="lg:hidden lg:m-2">
         <MobileDashboardSidebar />
       </div>
-
-      <aside className="hidden lg:flex flex-col p-4 items-center w-64 shadow-lg h-screen">
+      <aside className="hidden lg:flex flex-col lg:p-4 items-center w-64 shadow-lg h-screen">
         <div className="flex flex-col gap-2 w-full">
           <div className="flex gap-2 items-center justify-center">
             <h3 className="font-semibold text-2xl">Dashboard</h3>
@@ -177,7 +176,7 @@ const DashboardSidebar = () => {
           </nav>
         </div>
       </aside>
-    </div>
+    </>
   );
 };
 

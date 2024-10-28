@@ -31,7 +31,7 @@ const MobileDashboardSidebar = () => {
       <SheetTrigger asChild>
         <Button
           variant={"outline"}
-          className="rounded-r-full absolute -left-2"
+          className="rounded-r-full absolute -left-3"
           size={"icon"}
         >
           <ChevronRight />

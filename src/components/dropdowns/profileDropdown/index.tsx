@@ -13,6 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 type UserProps = {
   id: number;
@@ -38,7 +39,9 @@ const ProfileDropdown = ({ name }: UserProps) => {
         <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>Perfil</DropdownMenuItem>
+          <Link href={"/meu-perfil"}>
+            <DropdownMenuItem>Perfil</DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>GitHub</DropdownMenuItem>
           <DropdownMenuItem>Suporte</DropdownMenuItem>
         </DropdownMenuGroup>

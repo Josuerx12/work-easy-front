@@ -35,6 +35,7 @@ import Step1NewCompany from "./steps/step1";
 import Step2NewCompany from "./steps/step2";
 import Step3NewCompany from "./steps/step3";
 import { useForm } from "react-hook-form";
+import VerifyCompanyData from "./verifyData";
 
 export type newCompanyCredentials = {
   email: string;
@@ -62,7 +63,7 @@ const NewCompanyModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [steps, setSteps] = useState(1);
 
-  const { register, reset, setValue, handleSubmit } =
+  const { register, reset, setValue, handleSubmit, getValues } =
     useForm<newCompanyCredentials>();
 
   function onSubmit(data: newCompanyCredentials) {
@@ -121,39 +122,40 @@ const NewCompanyModal = ({
               setValue={setValue}
             />
           )}
+          {steps === 4 && (
+            <VerifyCompanyData getValues={getValues} handleStep={setSteps} />
+          )}
         </form>
 
         <DialogFooter className="flex gap-1">
           <Button
             onClick={handleCancel}
-            className="flex gap-2 items-center"
-            variant={"ghost"}
+            className="flex gap-2 items-center rounded-full bg-stone-200 hover:bg-stone-300 text-secondary-foreground"
           >
             Cancelar
           </Button>
           {steps > 1 && steps <= 3 && (
             <Button
               onClick={() => setSteps((prev) => --prev)}
-              className="flex gap-1 items-center"
+              className="flex gap-1 items-center bg-teal-500 hover:bg-teal-600 rounded-full"
             >
               <ChevronLeft /> Voltar
             </Button>
           )}
-          {steps >= 1 && steps < 3 && (
+          {steps >= 1 && steps < 4 && (
             <Button
               onClick={() => setSteps((prev) => ++prev)}
-              className="flex gap-1 items-center"
+              className="flex gap-1 items-center bg-teal-500 hover:bg-teal-600 rounded-full"
             >
               Proximo <ChevronRight />
             </Button>
           )}
-          {steps === 3 && (
+          {steps === 4 && (
             <Button
-              variant={"outline"}
               onClick={() => formRef.current?.requestSubmit()}
-              className="flex gap-1 items-center"
+              className="flex gap-1 items-center rounded-full bg-slate-600"
             >
-              Confirmar <Check />
+              Gravar <Check />
             </Button>
           )}
         </DialogFooter>

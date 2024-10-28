@@ -30,6 +30,7 @@ const Step3NewCompany = ({ register, reset, setValue }: Props) => {
             className="col-span-3"
           />
           <button
+            type="button"
             title="Buscar seu endereço pelo cep informado!"
             className={`rounded-full duration-200 w-[30px] h-[30px] p-2 flex items-center justify-center bg-primary text-primary-foreground`}
           >
