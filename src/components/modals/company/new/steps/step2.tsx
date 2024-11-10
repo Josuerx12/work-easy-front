@@ -10,19 +10,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  createCompanyErros,
+  newCompanyCredentials,
+} from "@/interfaces/company.inteface";
+import {
   UseFormRegister,
   UseFormReset,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
-import { newCompanyCredentials } from "..";
 
 type Props = {
   register: UseFormRegister<newCompanyCredentials>;
   reset: UseFormReset<newCompanyCredentials>;
   setValue: UseFormSetValue<newCompanyCredentials>;
+  watch: UseFormWatch<newCompanyCredentials>;
+  errors: createCompanyErros | null;
 };
 
-const Step2NewCompany = ({ register, reset, setValue }: Props) => {
+const Step2NewCompany = ({ register, reset, setValue, watch }: Props) => {
   return (
     <div className="w-full flex gap-4 flex-wrap">
       <div className="flex flex-col grow gap-2 basis-30">
@@ -30,6 +36,7 @@ const Step2NewCompany = ({ register, reset, setValue }: Props) => {
         <Select
           onValueChange={(e) => setValue("documentType", e)}
           defaultValue="cpf"
+          value={watch("documentType")}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Selecione o tipo de documento" />

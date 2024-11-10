@@ -14,6 +14,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { LoginCredentials } from "@/interfaces/user.interface";
 import { TabsContent } from "@radix-ui/react-tabs";
+import { LoaderCircle } from "lucide-react";
 import { redirect } from "next/navigation";
 import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -23,7 +24,7 @@ const LoginCard = () => {
   const { handleSubmit, register } = useForm<LoginCredentials>();
   const { toast } = useToast();
   const { login, user } = useAuth();
-  const { mutateAsync } = useMutation(["handleLogin"], login, {
+  const { mutateAsync, isLoading } = useMutation(["handleLogin"], login, {
     onSuccess: () => {
       toast({
         title: "Autenticação",
@@ -76,10 +77,17 @@ const LoginCard = () => {
         </CardContent>
         <CardFooter className="flex justify-center">
           <Button
+            disabled={isLoading}
             onClick={() => formRef.current?.requestSubmit()}
             title="Clique aqui para fazer login."
           >
-            Fazer Login
+            {isLoading ? (
+              <div className="flex justify-center items-center">
+                <span>Aguarde</span> <LoaderCircle className="animate-spin" />
+              </div>
+            ) : (
+              <>Fazer Login </>
+            )}
           </Button>
         </CardFooter>
       </Card>

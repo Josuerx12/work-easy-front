@@ -1,20 +1,26 @@
 "use client";
 import TaskDetailModal from "@/components/modals/tasks/taskDetailModal";
+import LoadingScreen from "@/components/screens/loading";
 import TopScheduleMenu from "@/components/topBars/topScheduleMenu";
 import { useAuth } from "@/context/AuthContext";
 import { Pickaxe } from "lucide-react";
 import { redirect } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AgendaPage = () => {
-  const { user } = useAuth();
-
-  if (!user) {
-    redirect("/auth");
-  }
-
+  const { user, loading } = useAuth();
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    if (!user && !loading) {
+      redirect("/auth");
+    }
+  }, [user, loading]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   function handlePrevMonth() {
     if (month === 0) {

@@ -1,16 +1,20 @@
 "use client";
 import React, { useState } from "react";
 import { UseFormGetValues } from "react-hook-form";
-import { newCompanyCredentials } from "..";
-import { ChevronRight, Pen, PenBox } from "lucide-react";
+import { ChevronRight, Info, Pen, PenBox } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  createCompanyErros,
+  newCompanyCredentials,
+} from "@/interfaces/company.inteface";
 
 type Props = {
   handleStep: React.Dispatch<React.SetStateAction<number>>;
   getValues: UseFormGetValues<newCompanyCredentials>;
+  errors: createCompanyErros | null;
 };
 
-const VerifyCompanyData = ({ getValues, handleStep }: Props) => {
+const VerifyCompanyData = ({ getValues, handleStep, errors }: Props) => {
   const [isBasicOpen, setIsBasicOpen] = useState(false);
   const [isDocumentCredentialsOpen, setIsDocumentCredentialsOpen] =
     useState(false);
@@ -29,11 +33,21 @@ const VerifyCompanyData = ({ getValues, handleStep }: Props) => {
           className="flex w-full justify-between items-center px-4 py-2 bg-gray-100 rounded-md transition-colors duration-300 hover:bg-gray-200"
         >
           <span>Credenciais básicas</span>
-          <ChevronRight
-            className={`transform transition-transform duration-200 ${
-              isBasicOpen ? "rotate-90" : "rotate-0"
-            }`}
-          />
+          <div className="flex">
+            {(errors?.errors?.email ||
+              errors?.errors?.name ||
+              errors?.errors?.password) && (
+              <div title="Verifique as credenciais basicas, para continuar!">
+                <Info color="red" />
+              </div>
+            )}
+
+            <ChevronRight
+              className={`transform transition-transform duration-200 ${
+                isBasicOpen ? "rotate-90" : "rotate-0"
+              }`}
+            />
+          </div>
         </button>
         <div
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
@@ -52,14 +66,40 @@ const VerifyCompanyData = ({ getValues, handleStep }: Props) => {
               </Button>
             </div>
             <p>
-              Nome da empresa:
+              <span
+                title={
+                  errors?.errors?.name &&
+                  "Nome informado não é valido, verifique e tente novamente!"
+                }
+                className={`text-red-600 font-bold ${
+                  errors?.errors?.name ? "cursor-help" : ""
+                }`}
+              >
+                Nome da empresa:
+              </span>
               <span className="font-semibold ml-2">{getValues("name")}</span>
             </p>
 
             <p>
-              Email da empresa:
+              <span
+                title={
+                  errors?.errors?.email &&
+                  "Nome informado não é valido, verifique e tente novamente!"
+                }
+                className={`text-red-600 font-bold ${
+                  errors?.errors?.email ? "cursor-help" : ""
+                }`}
+              >
+                Email da empresa:
+              </span>
               <span className="font-semibold ml-2">{getValues("email")}</span>
             </p>
+
+            {errors?.errors?.password && (
+              <p className="w-full text-red-600 bg-neutral-200 p-2 rounded-md text-center">
+                {errors.errors.password}
+              </p>
+            )}
           </div>
         </div>
 

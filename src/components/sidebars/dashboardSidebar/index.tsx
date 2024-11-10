@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import MobileDashboardSidebar from "./mobile";
 import {
   Building2,
@@ -14,13 +14,20 @@ import {
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import LoadingScreen from "@/components/screens/loading";
 
 const DashboardSidebar = () => {
   const path = usePathname();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
-  if (!user) {
-    redirect("/auth");
+  useEffect(() => {
+    if (!user && !loading) {
+      redirect("/auth");
+    }
+  }, [user, loading]);
+
+  if (loading) {
+    return <LoadingScreen />;
   }
 
   return (

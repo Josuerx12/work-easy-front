@@ -1,3 +1,5 @@
+"use client";
+import LoadingScreen from "@/components/screens/loading";
 import RequestsTable from "@/components/tables/requestsTable";
 import TopBarRequestMenu from "@/components/topBars/topBarRequestMenu";
 import {
@@ -9,9 +11,23 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import React from "react";
+import { useAuth } from "@/context/AuthContext";
+import { redirect } from "next/navigation";
+import React, { useEffect } from "react";
 
 const RequestsPage = () => {
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!user && !loading) {
+      redirect("/auth");
+    }
+  }, [user, loading]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   const taskArr = [
     {
       id: 1,

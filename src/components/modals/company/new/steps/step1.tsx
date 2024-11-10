@@ -7,15 +7,19 @@ import {
   UseFormReset,
   UseFormSetValue,
 } from "react-hook-form";
-import { newCompanyCredentials } from "..";
+import {
+  createCompanyErros,
+  newCompanyCredentials,
+} from "@/interfaces/company.inteface";
 
 type Props = {
   register: UseFormRegister<newCompanyCredentials>;
   reset: UseFormReset<newCompanyCredentials>;
   setValue: UseFormSetValue<newCompanyCredentials>;
+  errors: createCompanyErros | null;
 };
 
-const Step1NewCompany = ({ register, reset, setValue }: Props) => {
+const Step1NewCompany = ({ register, reset, setValue, errors }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -29,8 +33,16 @@ const Step1NewCompany = ({ register, reset, setValue }: Props) => {
           id="name"
           {...register("name")}
           placeholder="JC Dev Ltda."
-          className="col-span-3"
+          className={`col-span-3 ${
+            errors?.errors?.name ? "border-red-600 outline-red-600" : ""
+          }`}
         />
+        {errors?.errors?.name && (
+          <p className="w-full text-red-600 bg-neutral-200 p-2 rounded-md text-center">
+            <span className="font-bold">Error: </span>
+            {errors.errors.name}
+          </p>
+        )}
       </div>
       <div className="flex flex-col grow gap-2 basis-96">
         <Label htmlFor="email" className="text-left">
@@ -41,8 +53,16 @@ const Step1NewCompany = ({ register, reset, setValue }: Props) => {
           {...register("email")}
           placeholder="jcdev@email.com"
           type="email"
-          className="col-span-3"
+          className={`col-span-3 ${
+            errors?.errors?.email ? "border-red-600 outline-red-600" : ""
+          }`}
         />
+        {errors?.errors?.email && (
+          <p className="w-full text-red-600 bg-neutral-200 p-2 rounded-md text-center">
+            <span className="font-bold">Error: </span>
+            {errors.errors.email}
+          </p>
+        )}
       </div>
       <div className="flex flex-col grow gap-2 basis-96">
         <Label htmlFor="password" className="text-left">
@@ -54,7 +74,9 @@ const Step1NewCompany = ({ register, reset, setValue }: Props) => {
             id="password"
             placeholder="********"
             type={showPassword ? "text" : "password"}
-            className="col-span-3"
+            className={`col-span-3 ${
+              errors?.errors?.name ? "border-red-600 outline-red-600" : ""
+            }`}
           />
           <button
             type="button"
@@ -68,6 +90,12 @@ const Step1NewCompany = ({ register, reset, setValue }: Props) => {
             {showPassword ? <Eye /> : <EyeOff />}
           </button>
         </div>
+        {errors?.errors?.password && (
+          <p className="w-full text-red-600 bg-neutral-200 p-2 rounded-md text-center">
+            <span className="font-bold">Error: </span>
+            {errors.errors.password}
+          </p>
+        )}
       </div>
       <div className="flex grow flex-col gap-2 basis-96">
         <Label htmlFor="confirmPassword" className="text-left">

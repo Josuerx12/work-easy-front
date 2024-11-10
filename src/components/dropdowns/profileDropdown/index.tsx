@@ -5,22 +5,15 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
-type UserProps = {
-  id: number;
-  name: string;
-};
+const ProfileDropdown = () => {
+  const { user, logout } = useAuth();
 
-const ProfileDropdown = ({ name }: UserProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -28,7 +21,7 @@ const ProfileDropdown = ({ name }: UserProps) => {
           title="Ir para pagina de calendario de tarefas."
           className="flex items-center gap-2 text-sm hover:text-neutral-400 duration-200 cursor-pointer"
         >
-          <p className="font-bold">{name}</p>
+          <p className="font-bold">{user?.name}</p>
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
             <AvatarFallback>WE</AvatarFallback>
@@ -46,7 +39,7 @@ const ProfileDropdown = ({ name }: UserProps) => {
           <DropdownMenuItem>Suporte</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

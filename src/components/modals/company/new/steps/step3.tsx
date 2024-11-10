@@ -1,17 +1,21 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  newCompanyCredentials,
+  createCompanyErros,
+} from "@/interfaces/company.inteface";
 import { Search } from "lucide-react";
 import {
   UseFormRegister,
   UseFormReset,
   UseFormSetValue,
 } from "react-hook-form";
-import { newCompanyCredentials } from "..";
 
 type Props = {
   register: UseFormRegister<newCompanyCredentials>;
   reset: UseFormReset<newCompanyCredentials>;
   setValue: UseFormSetValue<newCompanyCredentials>;
+  errors: createCompanyErros | null;
 };
 
 const Step3NewCompany = ({ register, reset, setValue }: Props) => {

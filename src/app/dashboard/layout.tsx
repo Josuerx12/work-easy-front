@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import DashboardSidebar from "@/components/sidebars/dashboardSidebar";
 import { useAuth } from "@/context/AuthContext";
 import { redirect } from "next/navigation";
+import LoadingScreen from "@/components/screens/loading";
 
 export const metadata: Metadata = {
   title: "Work Easy - Dashboard",

@@ -10,48 +10,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Ban,
-  BlocksIcon,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-} from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, LoaderCircle } from "lucide-react";
 import React, { ReactNode, useRef, useState } from "react";
-import Step1NewCompany from "./steps/step1";
 import Step2NewCompany from "./steps/step2";
 import Step3NewCompany from "./steps/step3";
 import { useForm } from "react-hook-form";
+import Step1NewCompany from "./steps/step1";
 import VerifyCompanyData from "./verifyData";
-
-export type newCompanyCredentials = {
-  email: string;
-  name: string;
-  password: string;
-  confirmPassword: string;
-  documentType: string;
-  document: string;
-  phone: string;
-  street: string;
-  neighborhood: string;
-  number: string;
-  city: string;
-  state: string;
-  cep: string;
-};
+import {
+  createCompanyErros,
+  newCompanyCredentials,
+} from "@/interfaces/company.inteface";
+import { useMutation } from "react-query";
+import { CompanyService } from "@/services/companyService";
+import { useToast } from "@/hooks/use-toast";
+import { revalidatePath } from "next/cache";
 
 const NewCompanyModal = ({
   closeNavMobile,
@@ -63,20 +36,64 @@ const NewCompanyModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [steps, setSteps] = useState(1);
 
-  const { register, reset, setValue, handleSubmit, getValues } =
-    useForm<newCompanyCredentials>();
+  const { toast } = useToast();
 
-  function onSubmit(data: newCompanyCredentials) {
-    console.log(data);
-    setSteps(1);
-    setIsOpen((prev) => !prev);
-    reset();
+  const { register, reset, setValue, handleSubmit, getValues, watch } =
+    useForm<newCompanyCredentials>({
+      defaultValues: {
+        documentType: "cpf",
+      },
+    });
+
+  const {
+    mutateAsync,
+    reset: resetMutation,
+    isLoading,
+    error,
+  } = useMutation<any, createCompanyErros, newCompanyCredentials>(
+    ["createCompany"],
+    CompanyService.create,
+    {
+      onSuccess: (data: any) => {
+        Promise.all([
+          setSteps(1),
+          setIsOpen((prev) => !prev),
+          reset(),
+          toast({
+            title: "Nova empresa cadastrada!",
+            description: `Empresa: ${data.name}, cadastrada com sucesso!`,
+          }),
+        ]);
+      },
+      onError: (err) => {
+        if (err.error) {
+          toast({
+            title: "Error ao cadastrar nova empresa.",
+            description: `Error: ${err.error}!`,
+            variant: "destructive",
+          });
+        }
+
+        if (err.errors) {
+          toast({
+            title: "Error ao cadastrar nova empresa.",
+            description: `Error: Verifique as credenciais informadas!`,
+            variant: "destructive",
+          });
+        }
+      },
+    }
+  );
+
+  async function onSubmit(data: newCompanyCredentials) {
+    await mutateAsync(data);
   }
 
   function handleCancel() {
     setSteps(1);
     setIsOpen((prev) => !prev);
     reset();
+    resetMutation();
   }
 
   const formRef = useRef<null | HTMLFormElement>(null);
@@ -106,6 +123,7 @@ const NewCompanyModal = ({
               register={register}
               reset={reset}
               setValue={setValue}
+              errors={error}
             />
           )}
           {steps === 2 && (
@@ -113,6 +131,8 @@ const NewCompanyModal = ({
               register={register}
               reset={reset}
               setValue={setValue}
+              watch={watch}
+              errors={error}
             />
           )}
           {steps === 3 && (
@@ -120,15 +140,28 @@ const NewCompanyModal = ({
               register={register}
               reset={reset}
               setValue={setValue}
+              errors={error}
             />
           )}
           {steps === 4 && (
-            <VerifyCompanyData getValues={getValues} handleStep={setSteps} />
+            <VerifyCompanyData
+              getValues={getValues}
+              handleStep={setSteps}
+              errors={error}
+            />
           )}
         </form>
 
+        {error?.error && (
+          <p className="w-full text-red-600 bg-neutral-200 p-2 rounded-md text-center">
+            <span className="font-bold">Error: </span>
+            {error.error}
+          </p>
+        )}
+
         <DialogFooter className="flex gap-1">
           <Button
+            disabled={isLoading}
             onClick={handleCancel}
             className="flex gap-2 items-center rounded-full bg-stone-200 hover:bg-stone-300 text-secondary-foreground"
           >
@@ -136,6 +169,7 @@ const NewCompanyModal = ({
           </Button>
           {steps > 1 && steps <= 3 && (
             <Button
+              disabled={isLoading}
               onClick={() => setSteps((prev) => --prev)}
               className="flex gap-1 items-center bg-teal-500 hover:bg-teal-600 rounded-full"
             >
@@ -144,6 +178,7 @@ const NewCompanyModal = ({
           )}
           {steps >= 1 && steps < 4 && (
             <Button
+              disabled={isLoading}
               onClick={() => setSteps((prev) => ++prev)}
               className="flex gap-1 items-center bg-teal-500 hover:bg-teal-600 rounded-full"
             >
@@ -152,10 +187,19 @@ const NewCompanyModal = ({
           )}
           {steps === 4 && (
             <Button
+              disabled={isLoading}
               onClick={() => formRef.current?.requestSubmit()}
               className="flex gap-1 items-center rounded-full bg-slate-600"
             >
-              Gravar <Check />
+              {isLoading ? (
+                <>
+                  Gravando <LoaderCircle className="animate-spin" />
+                </>
+              ) : (
+                <>
+                  Gravar <Check />
+                </>
+              )}
             </Button>
           )}
         </DialogFooter>

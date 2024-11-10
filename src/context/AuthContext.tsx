@@ -13,6 +13,8 @@ import { getCookie, setCookie, deleteCookie } from "cookies-next";
 
 export type ContextType = {
   login: (props: { email: string; password: string }) => Promise<unknown>;
+  logout: () => void;
+  loading: boolean;
   user?: IUser | null;
   token?: string;
 };
@@ -21,6 +23,7 @@ export const AuthContext = createContext<ContextType>({} as ContextType);
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<IUser | null | undefined>();
+  const [load, setLoad] = useState(true);
 
   const token = getCookie("refreshToken_workeasy");
 
@@ -30,6 +33,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         setupHttp.defaults.headers.common.Authorization = `Bearer ${token}`;
         await getUser();
       }
+      setLoad(false);
     };
     loadUser();
   }, [token]);
@@ -67,8 +71,14 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const logout = () => {
+    deleteCookie("refreshToken_workeasy");
+    setupHttp.defaults.headers.common.Authorization = ``;
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ login, token, user }}>
+    <AuthContext.Provider value={{ login, token, user, logout, loading: load }}>
       {children}
     </AuthContext.Provider>
   );

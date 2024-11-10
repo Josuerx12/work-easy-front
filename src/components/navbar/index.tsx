@@ -84,7 +84,7 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <ProfileDropdown name="Josué" id={2} />
+                  <ProfileDropdown />
                 </li>
               </>
             )}
@@ -159,7 +159,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <ProfileDropdown name="Josué" id={2} />
+                <ProfileDropdown />
               </li>
             </>
           )}
