@@ -26,9 +26,14 @@ export class CompanyService {
   static async getAll(props?: PaginationInputProps<CompanyFilter>) {
     const params = new URLSearchParams();
 
+    console.log(props?.filter);
+
     props?.page && params.append("page", props.page.toString());
     props?.perPage && params.append("perPage", props.perPage.toString());
-    props?.filter && params.append("filter", props.filter);
+    props?.filter?.searchBy &&
+      params.append("filter[search]", props.filter.searchBy);
+    props?.filter?.city && params.append("filter[city]", props.filter.city);
+    props?.filter?.uf && params.append("filter[uf]", props.filter.uf);
 
     const res = await setupHttp.get("/company", {
       params,

@@ -34,4 +34,8 @@ export interface ICompany {
   updatedAt: Date;
 }
 
-export type CompanyFilter = string;
+export type CompanyFilter = {
+  searchBy: string;
+  city: string;
+  uf: string;
+};

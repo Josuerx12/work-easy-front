@@ -14,7 +14,7 @@ const TopBarRequestMenu = () => {
   }
 
   return (
-    <div className="hidden lg:block w-fit drop-shadow-xl mt-4 bg-secondary ml-auto px-4 py-2 rounded-md">
+    <div className="hidden lg:block w-fit drop-shadow mt-4 bg-secondary ml-auto px-4 py-2 rounded-md">
       <div className="flex gap-4 justify-end items-center">
         <NewTaskModal
           ButtonNewTask={

@@ -11,62 +11,45 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CompanyFilter, ICompany } from "@/interfaces/company.inteface";
+import { CompanyUserFilter } from "@/interfaces/companyUsers.interface";
 import {
   PaginationInputProps,
   PaginatedResult,
 } from "@/interfaces/pagination.interface";
 import { CompanyService } from "@/services/companyService";
+import { CompanyUsersService } from "@/services/companyUsersService";
 import { ChevronLeft, ChevronRight, ChevronRightCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
-const BusinessPagination = () => {
+const CompanyUsersPagination = () => {
   const query = useSearchParams();
   const params = new URLSearchParams(query.toString());
   const router = useRouter();
 
   const pageQuery = query.get("page") ? Number(query.get("page")) : 1;
   const perPageQuery = query.get("perPage") ? Number(query.get("perPage")) : 10;
-  const searchQuery = query.get("filter[search]")
-    ? String(query.get("filter[search]"))
-    : "";
-  const ufQuery = query.get("filter[uf]")
-    ? String(query.get("filter[uf]"))
-    : "";
-  const cityQuery = query.get("filter[city]")
-    ? String(query.get("filter[city]"))
-    : "";
-
-  const filter = useMemo(
-    () => ({
-      city: cityQuery,
-      searchBy: searchQuery,
-      uf: ufQuery,
-    }),
-    [searchQuery, cityQuery, ufQuery]
-  );
+  const filterQuery = query.get("filter") ? String(query.get("filter")) : "";
 
   const [paginationFilters, setPaginationFilters] = useState<
-    PaginationInputProps<CompanyFilter>
-  >({ page: pageQuery, perPage: perPageQuery, filter });
+    PaginationInputProps<CompanyUserFilter>
+  >({ page: pageQuery, perPage: perPageQuery, filter: filterQuery });
 
-  const { refetch, isRefetching, isLoading, data } = useQuery<
-    PaginatedResult<ICompany>
-  >(["companies", paginationFilters], ({ queryKey }) => {
-    const [, params] = queryKey;
+  const { isRefetching, isLoading, data } = useQuery(
+    ["companyUsers", paginationFilters],
+    ({ queryKey }) => {
+      const [, params] = queryKey;
 
-    return CompanyService.getAll(params as PaginationInputProps<CompanyFilter>);
-  });
+      return CompanyUsersService.getAll(
+        params as PaginationInputProps<CompanyUserFilter>
+      );
+    }
+  );
 
   useEffect(() => {
-    paginationFilters?.filter?.searchBy &&
-      params.set("filter[search]", paginationFilters.filter.searchBy);
-    paginationFilters?.filter?.city &&
-      params.set("filter[city]", paginationFilters.filter.city);
-    paginationFilters?.filter?.uf &&
-      params.set("filter[uf]", paginationFilters.filter.uf);
+    paginationFilters?.filter && params.set("filter", paginationFilters.filter);
     paginationFilters?.page &&
       params.set("page", paginationFilters.page.toString());
     paginationFilters?.perPage &&
@@ -129,11 +112,11 @@ const BusinessPagination = () => {
           }
         >
           <SelectTrigger className="w-fit">
-            <SelectValue placeholder="Selecione quantas empresas devem ser listadas" />
+            <SelectValue placeholder="Selecione quantos usuários empresas devem ser listados" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Quantidade de empresas listadas</SelectLabel>
+              <SelectLabel>Quantidade de usuários listados</SelectLabel>
               <SelectItem value="10">10</SelectItem>
               <SelectItem value="25">25</SelectItem>
               <SelectItem value="50">50</SelectItem>
@@ -146,4 +129,4 @@ const BusinessPagination = () => {
   );
 };
 
-export default BusinessPagination;
+export default CompanyUsersPagination;

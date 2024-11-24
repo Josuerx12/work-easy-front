@@ -4,8 +4,11 @@ import {
   newCompanyCredentials,
   createCompanyErros,
 } from "@/interfaces/company.inteface";
+import { ViaCepService } from "@/services/viacepService";
 import { Search } from "lucide-react";
+import { useRef } from "react";
 import {
+  UseFormGetValues,
   UseFormRegister,
   UseFormReset,
   UseFormSetValue,
@@ -15,10 +18,29 @@ type Props = {
   register: UseFormRegister<newCompanyCredentials>;
   reset: UseFormReset<newCompanyCredentials>;
   setValue: UseFormSetValue<newCompanyCredentials>;
+  getValues: UseFormGetValues<newCompanyCredentials>;
   errors: createCompanyErros | null;
 };
 
-const Step3NewCompany = ({ register, reset, setValue }: Props) => {
+const Step3NewCompany = ({ register, reset, setValue, getValues }: Props) => {
+  const numberRef = useRef<null | HTMLInputElement>(null);
+
+  const handleFindCep = async () => {
+    const cep = getValues("cep")
+      .replaceAll(" ", "")
+      .replaceAll(".", "")
+      .replaceAll("-", "");
+
+    const result = await ViaCepService.findByCep(cep);
+
+    setValue("city", result.localidade);
+    setValue("neighborhood", result.bairro);
+    setValue("street", result.logradouro);
+    setValue("state", result.estado);
+
+    numberRef.current?.focus();
+  };
+
   return (
     <div className="w-full flex gap-4 flex-wrap">
       <div className="flex flex-col grow gap-2 basis-32">
@@ -34,6 +56,7 @@ const Step3NewCompany = ({ register, reset, setValue }: Props) => {
             className="col-span-3"
           />
           <button
+            onClick={handleFindCep}
             type="button"
             title="Buscar seu endereço pelo cep informado!"
             className={`rounded-full duration-200 w-[30px] h-[30px] p-2 flex items-center justify-center bg-primary text-primary-foreground`}
@@ -76,6 +99,7 @@ const Step3NewCompany = ({ register, reset, setValue }: Props) => {
           placeholder="12"
           type="tel"
           className="col-span-3"
+          ref={numberRef}
         />
       </div>
       <div className="flex flex-col grow gap-2">

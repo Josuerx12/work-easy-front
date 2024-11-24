@@ -15,59 +15,40 @@ import {
 import { CompanyService } from "@/services/companyService";
 import { Info, LoaderCircle, Trash } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Image from "next/image";
 import DeleteCompanyModal from "@/components/modals/company/delete";
 import DetailCompanyModal from "@/components/modals/company/details";
+import { CompanyUsersService } from "@/services/companyUsersService";
+import { CompanyUserFilter } from "@/interfaces/companyUsers.interface";
 
-const BusinessTable = () => {
+const CompanyUsersTable = () => {
   const query = useSearchParams();
 
   const pageQuery = query.get("page") ? Number(query.get("page")) : 1;
   const perPageQuery = query.get("perPage") ? Number(query.get("perPage")) : 10;
-  const searchQuery = query.get("filter[search]")
-    ? String(query.get("filter[search]"))
-    : "";
-  const ufQuery = query.get("filter[uf]")
-    ? String(query.get("filter[uf]"))
-    : "";
-  const cityQuery = query.get("filter[city]")
-    ? String(query.get("filter[city]"))
-    : "";
-
-  const filter = useMemo(
-    () => ({
-      city: cityQuery,
-      searchBy: searchQuery,
-      uf: ufQuery,
-    }),
-    [searchQuery, cityQuery, ufQuery]
-  );
+  const filterQuery = query.get("filter") ? String(query.get("filter")) : "";
 
   const [paginationFilters, setPaginationFilters] = useState<
-    PaginationInputProps<CompanyFilter>
-  >({
-    page: pageQuery,
-    perPage: perPageQuery,
-    filter,
-  });
+    PaginationInputProps<CompanyUserFilter>
+  >({ page: pageQuery, perPage: perPageQuery, filter: filterQuery });
 
   useEffect(() => {
     setPaginationFilters((prev) => ({
       page: pageQuery,
       perPage: perPageQuery,
-      filter,
+      filter: filterQuery,
     }));
-  }, [pageQuery, perPageQuery, filter]);
+  }, [pageQuery, perPageQuery, filterQuery]);
 
-  const { data, isLoading } = useQuery<PaginatedResult<ICompany>>(
-    ["companies", paginationFilters],
+  const { data, isLoading } = useQuery(
+    ["companyUsers", paginationFilters],
     ({ queryKey }) => {
       const [, params] = queryKey;
       console.log(params);
-      return CompanyService.getAll(
-        params as PaginationInputProps<CompanyFilter>
+      return CompanyUsersService.getAll(
+        params as PaginationInputProps<CompanyUserFilter>
       );
     }
   );
@@ -84,36 +65,28 @@ const BusinessTable = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Logo</TableHead>
-                <TableHead>Nome Empresa</TableHead>
+                <TableHead>Avatar</TableHead>
+                <TableHead>Nome</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Telefone</TableHead>
-                <TableHead>Documento</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.items?.map((business) => (
-                <TableRow key={business.id}>
+              {data?.items?.map((data) => (
+                <TableRow key={data.id}>
                   <TableCell>
                     <Image
                       width={40}
                       height={40}
                       className="min-w-10 min-h-10"
-                      alt={`Logo ${business.name}`}
+                      alt={`Logo ${data.user?.name}`}
                       src={`https://github.com/shadcn.png`}
                     />
                   </TableCell>
                   <TableCell>
-                    <span className="line-clamp-1">{business.name}</span>
+                    <span className="line-clamp-1">{data.user?.name}</span>
                   </TableCell>
                   <TableCell>
-                    <span className="line-clamp-1">{business.email}</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="line-clamp-1">{business.phone}</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="line-clamp-1">{business.document}</span>
+                    <span className="line-clamp-1">{data.user?.email}</span>
                   </TableCell>
 
                   <TableCell>
@@ -122,25 +95,27 @@ const BusinessTable = () => {
                         ButtonT={
                           <span className="line-clamp-1">
                             <div
-                              title={`Ver detalhes da empresa ${business.name}`}
+                              title={`Ver detalhes da empresa ${data.user?.name}`}
                               className="flex items-center cursor-pointer justify-between w-fit rounded-md hover:bg-blue-600 duration-200 p-2 hover:text-white"
                             >
                               <Info size={16} />
                             </div>
                           </span>
                         }
-                        company={business as any}
+                        company={data as any}
+                        key={data.id}
                       />
                       <DeleteCompanyModal
+                        key={data.id}
                         ButtonT={
                           <div
-                            title={`Deletar empresa ${business.name}`}
+                            title={`Deletar empresa ${data.user?.name}`}
                             className="flex items-center cursor-pointer justify-between w-fit rounded-md hover:bg-red-600 duration-200 p-2 hover:text-white"
                           >
                             <Trash size={16} />
                           </div>
                         }
-                        company={business}
+                        company={data as any}
                       />
                     </div>
                   </TableCell>
@@ -154,4 +129,4 @@ const BusinessTable = () => {
   );
 };
 
-export default BusinessTable;
+export default CompanyUsersTable;

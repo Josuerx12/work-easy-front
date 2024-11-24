@@ -28,7 +28,7 @@ const TopScheduleMenu = ({
   year,
 }: Props) => {
   return (
-    <div className="hidden lg:block w-fit drop-shadow-xl mt-4 bg-secondary ml-auto px-4 py-2 rounded-md">
+    <div className="hidden lg:block w-fit drop-shadow mt-4 bg-secondary ml-auto px-4 py-2 rounded-md">
       <div className="flex gap-4 justify-end items-center">
         <div className="flex justify-between w-40 items-center gap-2">
           <Button onClick={handlePrevMonth} title="Mes anterior" size={"icon"}>

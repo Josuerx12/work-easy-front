@@ -109,7 +109,7 @@ const AgendaPage = () => {
         {days.map((day, index) => (
           <div
             key={index}
-            className="border p-2 text-center rounded shadow-lg flex flex-col relative h-56 "
+            className="border p-2 text-center rounded shadow flex flex-col relative h-56 "
           >
             <p className="bg-primary w-8 h-8 font-semibold text-sm text-primary-foreground flex items-center justify-center rounded-full absolute inset-0 -top-2 -left-2 mb-1">
               {day.getDate()}

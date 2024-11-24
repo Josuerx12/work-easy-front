@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt">
-      <body className={`${nunito.className} antialiased`}>
+      <body className={`${nunito.className} antialiased bg-white/80`}>
         <AuthContextProvider>
           <ReactQueryProvider>
             <Navbar />

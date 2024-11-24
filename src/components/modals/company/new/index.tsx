@@ -141,6 +141,7 @@ const NewCompanyModal = ({
               reset={reset}
               setValue={setValue}
               errors={error}
+              getValues={getValues}
             />
           )}
           {steps === 4 && (
